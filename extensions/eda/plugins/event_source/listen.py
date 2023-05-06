@@ -1,14 +1,13 @@
 #!/usr/bin/env python -u
 
-import logging
-import sys
-import speech_recognition as sr
-import time
-import string
 import asyncio
-import nltk
-from nltk.tokenize import word_tokenize
+import logging
+import string
 
+import janus
+import nltk
+import speech_recognition as sr
+from nltk.tokenize import word_tokenize
 
 logger = logging.getLogger("computer")
 
@@ -26,10 +25,7 @@ def recognize_audio(r, source):
     return text
 
 
-async def main(queue, args):
-    if args is None:
-        args = sys.argv[1:]
-
+def listen(queue, args):
     r = sr.Recognizer()
     with sr.Microphone(sample_rate=8000) as source:
         r.adjust_for_ambient_noise(source, duration=5)
@@ -46,20 +42,24 @@ async def main(queue, args):
             if text == "":
                 continue
 
-            if text == "15 15 15 15 15 15 15":
-                continue
-
             print(f"You said '{text}'")
-            # ok = input("Is this correct? [y/n] ")
-            # if ok == "n":
-            #    continue
 
-            await queue.put(dict(text=text, tokens=nltk.pos_tag(word_tokenize(text))))
+            queue.put(dict(text=text, tokens=nltk.pos_tag(word_tokenize(text))))
 
-            # generate_response(text)
-            time.sleep(1)
 
-    return 0
+async def main(output_queue, args):
+    queue = janus.Queue()
+
+    loop = asyncio.get_event_loop()
+
+    loop.run_in_executor(None, listen, queue.sync_q, args)
+
+    while True:
+        try:
+            data = await queue.async_q.get()
+            await output_queue.put(data)
+        except KeyboardInterrupt:
+            return
 
 
 if __name__ == "__main__":
