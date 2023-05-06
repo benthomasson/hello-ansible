@@ -1,0 +1,8 @@
+pyaudio
+openai-whisper
+SpeechRecognition
+nltk
+isort
+black
+flake8
+

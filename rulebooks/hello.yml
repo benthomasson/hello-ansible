@@ -1,0 +1,13 @@
+---
+- name: Hello
+  hosts: all
+  gather_facts: False
+  sources:
+    - listen:
+  rules:
+    - name: Hello
+      condition: event.words = "hello ansible"
+      action:
+        say:
+          msg: "Hello"
+...
