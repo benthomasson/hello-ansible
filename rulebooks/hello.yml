@@ -6,7 +6,7 @@
     - listen:
   rules:
     - name: Hello
-      condition: event.words = "hello ansible"
+      condition: event.text == 'hello'
       action:
         say:
           msg: "Hello"
