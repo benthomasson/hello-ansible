@@ -6,8 +6,13 @@
     - listen:
   rules:
     - name: Hello
-      condition: event.text == 'hello'
+      condition: event.text == 'hello ansible'
       action:
         say:
-          msg: "Hello"
+          text: "Hello"
+    - name: Greeting
+      condition: event.text == 'i am ben'
+      action:
+        say:
+          text: "Nice to meet you Ben"
 ...
