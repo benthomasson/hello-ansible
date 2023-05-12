@@ -1,0 +1,60 @@
+---
+- name: Hello
+  hosts: all
+  gather_facts: False
+  sources:
+    - listen:
+  rules:
+    - name: Ignore Reply
+      condition:
+        all:
+          - event.state == "reply"
+          - event.meta.source.name == "listen"
+      actions:
+        - retract_fact:
+            fact:
+              state: "reply"
+        - debug:
+    - name: Hello
+      condition:
+        any:
+          - event.text == 'hello ansible'
+          - event.text == 'hello anthible'
+          - event.text == 'hello anthable'
+      actions:
+        - set_fact:
+            fact:
+              state: "reply"
+        - say:
+            text: "Hello, I am ready for your command"
+        - debug:
+    - name: Greeting
+      condition: event.text == 'i am ben'
+      actions:
+        - set_fact:
+            fact:
+              state: "reply"
+        - say:
+            text: "Nice to meet you Ben"
+        - debug:
+    - name: Goodbye
+      condition: event.text == 'goodbye'
+      actions:
+        - set_fact:
+            fact:
+              state: "reply"
+        - say:
+            text: "Have a good day"
+        - debug:
+        - shutdown:
+            delay: 0
+    - name: Default
+      condition: event.meta.source.name == "listen"
+      actions:
+        - set_fact:
+            fact:
+              state: "reply"
+        - say:
+            text: "I did not understand that"
+        - debug:
+...
