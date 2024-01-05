@@ -6,7 +6,7 @@
     - listen:
   rules:
     - name: Hello
-      condition: event.text == 'hello ansible'
+      condition: event.text == 'hello'
       action:
         say:
           text: "Hello"
@@ -15,4 +15,9 @@
       action:
         say:
           text: "Nice to meet you Ben"
+    - name: Goodbye
+      condition: event.text == 'goodbye'
+      action:
+        shutdown:
+          delay: 0
 ...
