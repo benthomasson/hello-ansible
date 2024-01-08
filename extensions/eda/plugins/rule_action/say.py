@@ -1,8 +1,6 @@
 import subprocess
 
-from ansible_rulebook.action.control import Control
-from ansible_rulebook.action.helper import Helper
-from ansible_rulebook.action.metadata import Metadata
+from ansible_rulebook.action.plugin import Control, Metadata, Helper
 
 
 async def main(metadata: Metadata, control: Control, **action_args) -> None:

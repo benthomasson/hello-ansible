@@ -6,18 +6,33 @@
     - listen:
   rules:
     - name: Hello
-      condition: event.text == 'hello'
+      condition: event.text == 'hello computer'
       action:
         say:
           text: "Hello"
+    - name: Thank you
+      condition: event.text == 'thank you'
+      action:
+        say:
+          text: "You're welcome"
     - name: Greeting
       condition: event.text == 'i am ben'
       action:
         say:
           text: "Nice to meet you Ben"
+    - name: JSON Post
+      condition: event.text == 'post please'
+      action:
+        json_post:
+          uri: https://534a9a46a2e298a6166618303e7cc5cd.m.pipedream.net
+          data:
+            message: hi
     - name: Goodbye
       condition: event.text == 'goodbye'
       action:
         shutdown:
           delay: 0
+          kind: now
+          message: "shut down now!!"
+
 ...
