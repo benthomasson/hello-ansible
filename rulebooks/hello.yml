@@ -24,15 +24,16 @@
       condition: event.text == 'post please'
       action:
         json_post:
-          uri: https://534a9a46a2e298a6166618303e7cc5cd.m.pipedream.net
+          uri: http://localhost:8000/webhook
           data:
             message: hi
     - name: Goodbye
       condition: event.text == 'goodbye'
-      action:
-        shutdown:
+      actions:
+      - say:
+          text: "bye bye"
+      - shutdown:
           delay: 0
           kind: now
           message: "shut down now!!"
-
 ...
